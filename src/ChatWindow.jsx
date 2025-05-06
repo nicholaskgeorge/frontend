@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import './ChatWindow.css';
 
@@ -8,6 +8,7 @@ export default function ChatWindow() {
   const [messages, setMessages] = useState([]);
   const [model, setModel] = useState("llama");
   const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -35,6 +36,10 @@ export default function ChatWindow() {
     setInput("");
     setLoading(false);
   };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
     <div className="chat-window">
@@ -64,6 +69,7 @@ export default function ChatWindow() {
             {msg.text}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
       <div className="input-container">
         <input

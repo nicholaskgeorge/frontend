@@ -48,7 +48,21 @@ export default function ChatWindow() {
       </div>
       <div className="messages-container">
         {messages.map((msg, i) => (
-          <div key={i} className={`message ${msg.role}`}>{msg.text}</div>
+          <div
+            key={i}
+            className={`message ${msg.role} bounce`}
+            style={{
+              display: 'inline-block',
+              minWidth: 40,
+              maxWidth: '90%',
+              width: 'fit-content',
+              wordBreak: 'break-word',
+              marginLeft: msg.role === 'user' ? 'auto' : undefined,
+              marginRight: msg.role === 'bot' ? 'auto' : undefined
+            }}
+          >
+            {msg.text}
+          </div>
         ))}
       </div>
       <div className="input-container">

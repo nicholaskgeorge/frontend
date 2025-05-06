@@ -26,11 +26,15 @@ export default function App() {
         <PDFViewer fileUrl={pdfUrl} />
       </div>
       <div style={{ flex: 1, padding: 20 }}>
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={handlePdfUpload}
-        />
+        <label className="upload-button">
+          Upload PDF
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={handlePdfUpload}
+            style={{ display: "none" }}
+          />
+        </label>
         <ChatWindow />
       </div>
     </div>

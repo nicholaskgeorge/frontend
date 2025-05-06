@@ -6,7 +6,6 @@ import './ChatWindow.css';
 export default function ChatWindow() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
-  const [model, setModel] = useState("llama");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
@@ -17,9 +16,12 @@ export default function ChatWindow() {
     setMessages(prev => [...prev, { role: "user", text: input }]);
     let botText = "";
     try {
+      // Dynamic routing: use visual QA for charts, otherwise text QA
+      const isVisualQuestion = /figure|chart|diagram|photo|image/i.test(input);
+      const modelType = isVisualQuestion ? 'visual' : 'small';
       const res = await axios.post(
         "http://localhost:8000/ask/",
-        new URLSearchParams({ question: input, model }),
+        new URLSearchParams({ question: input, model: modelType }),
         { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
       );
       console.log("[ChatWindow] ask response", res);
@@ -43,14 +45,6 @@ export default function ChatWindow() {
 
   return (
     <div className="chat-window">
-      <div className="model-select">
-        <label>Model:</label>
-        <select value={model} onChange={e => setModel(e.target.value)}>
-          <option value="llama">Text (LLaMA)</option>
-          <option value="distilbert">Text (DistilBERT)</option>
-          <option value="visual">Visual QA</option>
-        </select>
-      </div>
       <div className="messages-container">
         {messages.map((msg, i) => (
           <div

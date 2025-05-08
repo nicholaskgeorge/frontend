@@ -12,12 +12,8 @@ export default function App() {
       const formData = new FormData();
       formData.append("file", file);
       try {
-        // Upload PDF
-        await axios.post("http://localhost:8000/upload_pdf/", formData);
-        // Index PDF for RAG
-        const indexRes = await axios.post("http://localhost:8000/index_pdf/");
-        console.log("Indexing result:", indexRes.data);
-        // Show PDF
+        // Upload (and index) PDF
+        await axios.post("/upload_pdf/", formData);
         setPdfUrl(URL.createObjectURL(file));
       } catch (error) {
         console.error("Error uploading PDF:", error);

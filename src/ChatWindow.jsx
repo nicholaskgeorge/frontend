@@ -18,7 +18,7 @@ export default function ChatWindow() {
     try {
       // Dynamic routing: use visual QA for charts, otherwise text QA
       const isVisualQuestion = /figure|chart|diagram|photo|image/i.test(input);
-      const modelType = isVisualQuestion ? 'visual' : 'small';
+      const modelType = isVisualQuestion ? 'visual' : 'rag';
       const res = await axios.post(
         "http://localhost:8000/ask/",
         new URLSearchParams({ question: input, model: modelType }),
